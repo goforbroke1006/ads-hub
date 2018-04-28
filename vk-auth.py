@@ -2,6 +2,7 @@ import sys
 import webbrowser
 import urlparse
 import json
+import os
 
 from os.path import expanduser
 
@@ -64,7 +65,8 @@ class VkAuthServer(BaseHTTPRequestHandler):
             + "</body>"
             + "</html>")
 
-        sys.exit(0)
+        os._exit(0)
+#        sys.exit(0)
 
 
 def run(server_class=HTTPServer, handler_class=VkAuthServer, port=8080):
