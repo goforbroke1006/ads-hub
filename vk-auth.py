@@ -7,13 +7,14 @@ import os
 
 from os.path import expanduser
 
-print(sys.argv)
+#print(sys.argv)
 
-token_file_path = expanduser("~") + "/.adv-hub/vk-token"
+os.makedirs(expanduser("~") + "/.ads-hub/")
+token_file_path = expanduser("~") + "/.ads-hub/vk-token"
 
-http_port = int(sys.argv[1])
-client_id = int(sys.argv[2])
-client_secret = sys.argv[3] if len(sys.argv) >= 4 else None
+client_id = int(sys.argv[1])
+client_secret = sys.argv[2] if len(sys.argv) >= 3 else None
+http_port = int(sys.argv[3]) if len(sys.argv) >= 4 else 8082
 redirect_uri = "http://localhost:%d/app_dev.php/login/check-vkontakte" % http_port
 
 url = "https://oauth.vk.com/authorize" \

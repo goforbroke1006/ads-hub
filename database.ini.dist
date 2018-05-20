@@ -1,0 +1,5 @@
+[postgresql]
+host=localhost
+database=ads_hub_db
+user=root
+password=12345678

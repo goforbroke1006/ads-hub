@@ -1,0 +1,13 @@
+version: '2'
+
+services:
+  db:
+    image: postgres:9.6
+    environment:
+      POSTGRES_USER: "root"
+      POSTGRES_PASSWORD: "12345678"
+    volumes:
+      - ./:/code
+    working_dir: /code
+  app:
+    build: .
