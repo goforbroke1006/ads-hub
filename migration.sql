@@ -1,5 +1,5 @@
 CREATE TABLE advertising (
-    id SERIAL PRIMARY KEY,
+    social_network VARCHAR(64) NOT NULL,
     project_id INT,
     exported_at TIMESTAMP NOT NULL,
     campagn_name VARCHAR(1024) NOT NULL,
