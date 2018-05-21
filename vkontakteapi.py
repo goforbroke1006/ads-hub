@@ -63,6 +63,17 @@ class ads(vk_client):
                        client_id=None, include_deleted=True,
                        campaign_ids=(), ad_ids=(),
                        limit=200, offset=0):
+        """
+        https://vk.com/dev/ads.getAdsLayout
+        :param account_id:
+        :param client_id:
+        :param include_deleted:
+        :param campaign_ids:
+        :param ad_ids:
+        :param limit:
+        :param offset:
+        :return:
+        """
         options = {
             "account_id": account_id,
             "include_deleted": int(include_deleted),
@@ -77,6 +88,16 @@ class ads(vk_client):
 
     def get_statistics(self, account_id, ids_type, period,
                        ids=(), date_from=None, date_to=None):
+        """
+        https://vk.com/dev/ads.getStatistics
+        :param account_id:
+        :param ids_type:
+        :param period:
+        :param ids:
+        :param date_from:
+        :param date_to:
+        :return:
+        """
         ids_types = ["ad", "campaign", "client", "office", ]
         if ids_type not in ids_types:
             raise Exception("Unexpected ids_type: " + ids_type + ". "
