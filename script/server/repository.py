@@ -1,3 +1,4 @@
+import datetime
 import psycopg2
 
 
@@ -23,6 +24,15 @@ class AdsRepository:
         return conn
 
     def save_campaign(self, cam_id, name, start_time, stop_time):
+        if isinstance(start_time, int):
+            start_time = datetime.datetime.utcfromtimestamp(start_time)
+
+        if isinstance(stop_time, int):
+            stop_time = datetime.datetime.utcfromtimestamp(stop_time)
+
+        start_time = start_time.strftime("%Y-%m-%d")
+        stop_time = stop_time.strftime("%Y-%m-%d") if stop_time is not None else None
+
         campaign = self.get_campaign(cam_id)
 
         if campaign is not None:
@@ -53,7 +63,7 @@ class AdsRepository:
 
     def get_campaign(self, campaign_id):
         query = "SELECT * FROM campaign " \
-                "WHERE social_network = %s AND campaign_id = %d;"
+                "WHERE social_network = %s AND campaign_id = %s;"
         query = self.cursor.mogrify(query, (self.social_network, campaign_id,))
 
         if not self.debug_mode:
@@ -62,4 +72,5 @@ class AdsRepository:
         result = self.cursor.execute(query)
         self.connection.commit()
 
-        return result.fetchone()
+        campaign = self.cursor.fetchone()
+        return campaign

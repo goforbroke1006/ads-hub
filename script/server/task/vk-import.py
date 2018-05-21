@@ -14,12 +14,20 @@ from script.server.repository import AdsRepository
 
 account_id = int(sys.argv[1])
 
-cfg = json.load(open(expanduser("~") + '/.ads-hub/vk-token', 'r'))
+access_token = json.load(open(expanduser("~") + '/.ads-hub/vk-token', 'r'))["access_token"]
 database_config = config('database.ini', 'postgresql')
-# connection = connect(database_config)
-# cursor = connection.cursor()
+
 repository = AdsRepository(database_config, "vkontakte")
-ads_client = connector.vkontakte_api.AdsService(cfg["access_token"])
+ads_client = connector.vkontakte_api.AdsService(access_token)
+
+campaigns_list = ads_client.get_campaigns(account_id)["response"]
+# print(campaigns_list)
+for campaign in campaigns_list:
+    start_time = int(campaign["start_time"]) if int(campaign["start_time"]) > 0 else int(campaign["create_time"])
+    stop_time = int(campaign["stop_time"]) if int(campaign["stop_time"]) > 0 else None
+    repository.save_campaign(campaign["id"], campaign["name"],
+                             start_time, stop_time)
+os._exit(0)
 
 ads_list = ads_client.get_ads_layout(account_id)
 print(ads_list)

@@ -5,8 +5,8 @@ CREATE TABLE campaign (
     start_time TIMESTAMP NOT NULL,
     stop_time TIMESTAMP DEFAULT NULL,
 
-    CONSTRAINT u_social_network_capmpaign
-        UNIQUE (social_network, campagn_id)
+    CONSTRAINT u_social_network_campaign
+        UNIQUE (social_network, campaign_id)
 );
 
 CREATE TABLE advertising (
