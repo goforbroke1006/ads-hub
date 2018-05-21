@@ -1,6 +1,6 @@
 import json
 import urllib2
-
+from datetime import datetime
 
 BASE_URL = "https://api.vk.com/method/"
 API_VERSION = "5.74"
@@ -17,9 +17,10 @@ class VkApiError(Exception):
         return "%d : %s" % (self.code, self.message)
 
 
-class vkclient():
-    def __init__(self, access_token):
-        self.access_token = access_token;
+class vk_client:
+    def __init__(self, access_token, debug_mode=False):
+        self.access_token = access_token
+        self.debug_mode = debug_mode
         pass
 
     def request(self, method_name, options=None):
@@ -27,21 +28,20 @@ class vkclient():
             options = dict()
 
         try:
-            # print('' for (key, val) in options.iteritems())
-            # os._exit(0)
-
             url = "%s%s?access_token=%s&v=%s&%s" \
                   % (
                       BASE_URL, method_name, self.access_token, API_VERSION,
                       '&'.join("%s=%s" % (key, val) for (key, val) in options.iteritems())
                   )
-            print url
+
+            if self.debug_mode:
+                print url
 
             response = urllib2.urlopen(url)
             result = json.load(response)
 
-            # if DEBUG_MODE:
-            #     print(response.read())
+            if self.debug_mode:
+                print(result)
 
             if "error" in result:
                 raise VkApiError(result["error"])
@@ -49,32 +49,34 @@ class vkclient():
             return result
 
         except urllib2.HTTPError as ex:
-            # if ex.code == 400:
-            #     print "Error: You have not access for this account data"
-            # else:
-            print "Error %d: %s" % (ex.code, ex.reason)
+            if self.debug_mode:
+                print "Error %d: %s" % (ex.code, ex.reason)
+            else:
+                raise ex
 
 
 pass
 
 
-class ads(vkclient):
+class ads(vk_client):
     def get_ads_layout(self, account_id,
-                       client_id=0, include_deleted=True,
-                       campaign_ids=[], ad_ids=[],
+                       client_id=None, include_deleted=True,
+                       campaign_ids=(), ad_ids=(),
                        limit=200, offset=0):
-        return self.request("ads.getAdsLayout", {
+        options = {
             "account_id": account_id,
-            # "client_id": int(client_id),
             "include_deleted": int(include_deleted),
             "campaign_ids": ",".join("%s" % int(cmp_id) for cmp_id in campaign_ids),
             "ad_ids": ",".join("%s" % int(ad_id) for ad_id in ad_ids),
             "limit": int(limit),
             "offset": int(offset),
-        })
+        }
+        if client_id is not None:
+            options["client_id"] = client_id
+        return self.request("ads.getAdsLayout", options)
 
     def get_statistics(self, account_id, ids_type, period,
-                       ids=[], date_from=None, date_to=None):
+                       ids=(), date_from=None, date_to=None):
         ids_types = ["ad", "campaign", "client", "office", ]
         if ids_type not in ids_types:
             raise Exception("Unexpected ids_type: " + ids_type + ". "
@@ -90,6 +92,12 @@ class ads(vkclient):
 
         if date_to is None:
             date_to = 0
+
+        date_format = "%Y-%m" if "month" == period else "%Y-%m-%d"
+        if isinstance(date_from, datetime):
+            date_from = date_from.strftime(date_format)
+        if isinstance(date_to, datetime):
+            date_to = date_to.strftime(date_format)
 
         return self.request("ads.getStatistics", {
             "account_id": account_id,
