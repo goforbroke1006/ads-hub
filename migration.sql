@@ -21,11 +21,14 @@ CREATE TABLE advertising (
         UNIQUE (social_network, adv_id)
 );
 
-CREATE TABLE ads_statistics (
+CREATE TABLE statistics_day (
     social_network  VARCHAR(64)     NOT NULL,
     adv_id          INT             NOT NULL,
-    stat_date       TIMESTAMP,
+    stat_date       DATE,
     spent           DECIMAL(12, 4)  DEFAULT 0,
     impressions     INT             DEFAULT 0,
-    clicks          INT             DEFAULT 0
+    clicks          INT             DEFAULT 0,
+
+    CONSTRAINT u_statistics_day
+        UNIQUE (social_network, adv_id, stat_date)
 );
