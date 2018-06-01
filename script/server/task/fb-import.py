@@ -15,4 +15,4 @@ access_token = auth_config["access_token"]
 
 FacebookAdsApi.init(app_id, app_secret, access_token)
 
-some_import_method()
+some_import_method(122961418485088)
