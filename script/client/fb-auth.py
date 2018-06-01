@@ -45,11 +45,11 @@ class FbAuthServer(BaseHTTPRequestHandler):
                 short_lived_token = json.loads(res.text)["access_token"]
                 print "Short lived: " + short_lived_token
 
-                token_url = "%s/oauth/access_token?" \
-                            "grant_type=fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s" \
-                            % (BASE_FB_GRAPH_URL, app_id, app_secret, short_lived_token)
-
-                res = requests.get(token_url, allow_redirects=True)
+                # token_url = "%s/oauth/access_token?" \
+                #             "grant_type=fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s" \
+                #             % (BASE_FB_GRAPH_URL, app_id, app_secret, short_lived_token)
+                #
+                # res = requests.get(token_url, allow_redirects=True)
 
                 data = json.loads(res.text)
                 data["app_id"] = app_id
@@ -74,7 +74,10 @@ def run(server_class=HTTPServer, handler_class=FbAuthServer, port=8080):
 p = Process(target=run, args=(HTTPServer, FbAuthServer, http_port,))
 p.start()
 
-url = "https://www.facebook.com/v2.8/dialog/oauth?client_id=%s&redirect_uri=%s&scope=ads_read" \
+
+# ads_read,ads_management,manage_pages
+url = "https://www.facebook.com/v2.8/dialog/oauth?" \
+      "client_id=%s&redirect_uri=%s&scope=ads_read,ads_management,manage_pages" \
       % (app_id, redirect_url)
 
 print url
