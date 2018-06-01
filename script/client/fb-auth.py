@@ -25,6 +25,27 @@ if not isdir(hub_home):
     os.makedirs(hub_home)
 token_file_path = hub_home + "/fb-token"
 
+if os.path.isfile(token_file_path):
+    auth_config = json.load(open(token_file_path, 'r'))
+
+    token_url = "%s/oauth/access_token?" \
+                "grant_type=fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s" \
+                % (BASE_FB_GRAPH_URL, app_id, app_secret, auth_config["access_token"])
+
+    res = requests.get(token_url, allow_redirects=True)
+
+    data = json.loads(res.text)
+    data["app_id"] = app_id
+    data["app_secret"] = app_secret
+
+    data_str = json.dumps(data)
+
+    f = open(token_file_path, 'w+')
+    f.write(data_str)
+    f.close()
+
+    os._exit(0)
+
 
 class FbAuthServer(BaseHTTPRequestHandler):
     def _set_headers(self):
@@ -51,8 +72,14 @@ class FbAuthServer(BaseHTTPRequestHandler):
 
                 res = requests.get(token_url, allow_redirects=True)
 
+                data = json.loads(res.text)
+                data["app_id"] = app_id
+                data["app_secret"] = app_secret
+
+                data_str = json.dumps(data)
+
                 f = open(token_file_path, 'w+')
-                f.write(res.text)
+                f.write(data_str)
                 f.close()
 
                 os._exit(0)
