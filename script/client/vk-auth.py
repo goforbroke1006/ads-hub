@@ -1,10 +1,9 @@
-import urllib2
-import sys
-import webbrowser
-import urlparse
 import json
 import os
-
+import sys
+import urllib2
+import urlparse
+import webbrowser
 from os.path import expanduser
 from os.path import isdir
 
