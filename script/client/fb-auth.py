@@ -42,6 +42,10 @@ class FbAuthServer(BaseHTTPRequestHandler):
                             % (BASE_FB_GRAPH_URL, app_id, app_secret, data_dict["code"], redirect_url,)
                 print token_url
                 res = requests.get(token_url, allow_redirects=True)
+                print res.text
+                if res.status_code != 200:
+                    print res.status_code
+                    os._exit(1)
                 short_lived_token = json.loads(res.text)["access_token"]
                 print "Short lived: " + short_lived_token
 
@@ -63,7 +67,7 @@ class FbAuthServer(BaseHTTPRequestHandler):
                 f.write(data_str)
                 f.close()
 
-                exit(0)
+                os._exit(0)
 
 
 def run(server_class=HTTPServer, handler_class=FbAuthServer, port=8080):
@@ -78,8 +82,11 @@ p.start()
 
 # ads_read,ads_management,manage_pages
 reading_scopes = (
-    "ads_management", "ads_read", "business_management", "read_audience_network_insights", "read_insights",
-    "manage_pages", "pages_manage_cta", "pages_manage_instant_articles", "pages_show_list", "read_page_mailboxes",
+    "ads_read",
+    # "ads_management",
+    # "business_management",
+    "read_audience_network_insights", "read_insights",
+    # "manage_pages", "pages_manage_cta", "pages_manage_instant_articles", "pages_show_list", "read_page_mailboxes",
 )
 # old_scopes = ("ads_read", "ads_management", "manage_pages", "publish_pages", "business_management")
 url = "https://www.facebook.com/v2.8/dialog/oauth?" \

@@ -1,14 +1,24 @@
-# from facebook_business.adobjects.campaign import Campaign
+from facebook_business.adobjects.campaign import Campaign
 from facebook_business.adobjects.business import Business
+from facebook_business.adobjects.adaccount import AdAccount
+from facebook_business.adobjects.adset import AdSet
 
 
 def some_import_method(camp_id):
-    business = Business(camp_id)
-    insights = business.get_insights()
-    print insights
-    return 0
+    # account = AdAccount('act_%s' % camp_id)
+    # adsets = account.get_ad_sets(fields=[AdSet.Field.name])
+    #
+    # for adset in adsets:
+    #     print(adset[AdSet.Field.name])
+    #
+    # return 0
 
-    campaign = Campaign(camp_id)
+    # business = Business(camp_id)
+    # insights = business.get_insights()
+    # print insights
+    # return 0
+
+    campaign = Campaign(23842910504540140)
     params = {
         'date_preset': "last_7_days",
     }

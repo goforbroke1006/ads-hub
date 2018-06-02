@@ -18,10 +18,10 @@ access_token = auth_config["access_token"]
 facebookads.FacebookAdsApi.init(app_id, app_secret, access_token)
 facebook_business.FacebookAdsApi.init(app_id, app_secret, access_token)
 
-ids = (1034901646550640, 122961418485088, )
+# ids = (1034901646550640, 122961418485088, 1868848106489319,)
 
-for _id in ids:
-    try:
-        some_import_method(_id)
-    except Exception as e:
-        print e.message
+# for _id in ids:
+#     try:
+some_import_method(0)
+# except Exception as e:
+#     print e.message
