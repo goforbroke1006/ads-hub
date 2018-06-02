@@ -1,14 +1,20 @@
-import requests
-from facebook_business.adobjects.adaccount import AdAccount
+# from facebook_business.adobjects.campaign import Campaign
+from facebook_business.adobjects.business import Business
 
 
-# from facebookads.objects import Campaign
+def some_import_method(camp_id):
+    business = Business(camp_id)
+    insights = business.get_insights()
+    print insights
+    return 0
 
-
-def some_import_method(camp_id, access_token):
-    page_token_url = "https://graph.facebook.com/%s?fields=%s" % (camp_id, access_token)
-    res = requests.get(page_token_url, allow_redirects=True)
-    print res.text
+    campaign = Campaign(camp_id)
+    params = {
+        'date_preset': "last_7_days",
+    }
+    insights = campaign.get_insights(params)
+    print insights
+    return 0
 
     ad_account = AdAccount(camp_id)
     fields = [
@@ -28,10 +34,10 @@ def some_import_method(camp_id, access_token):
             'until': '2018-03-30'
         },
     }
-    # print ad_account.get_campaigns()
+    print ad_account.get_campaigns()
     print ad_account.get_my_account()
-    # ad_insights = ad_account.get_insights(fields=fields, params=params)
-    # print ad_insights
+    ad_insights = ad_account.get_insights(fields=fields, params=params)
+    print ad_insights
 
     # campaign = Campaign(camp_id)
     # insights = campaign.get_insights()

@@ -45,13 +45,15 @@ class FbAuthServer(BaseHTTPRequestHandler):
                 short_lived_token = json.loads(res.text)["access_token"]
                 print "Short lived: " + short_lived_token
 
-                # token_url = "%s/oauth/access_token?" \
-                #             "grant_type=fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s" \
-                #             % (BASE_FB_GRAPH_URL, app_id, app_secret, short_lived_token)
-                #
-                # res = requests.get(token_url, allow_redirects=True)
+                token_url = "%s/oauth/access_token?" \
+                            "grant_type=fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s" \
+                            % (BASE_FB_GRAPH_URL, app_id, app_secret, short_lived_token)
+
+                res = requests.get(token_url, allow_redirects=True)
 
                 data = json.loads(res.text)
+                print "Long lived: " + data["access_token"]
+
                 data["app_id"] = app_id
                 data["app_secret"] = app_secret
 
@@ -61,7 +63,7 @@ class FbAuthServer(BaseHTTPRequestHandler):
                 f.write(data_str)
                 f.close()
 
-                os._exit(0)
+                exit(0)
 
 
 def run(server_class=HTTPServer, handler_class=FbAuthServer, port=8080):
@@ -74,11 +76,15 @@ def run(server_class=HTTPServer, handler_class=FbAuthServer, port=8080):
 p = Process(target=run, args=(HTTPServer, FbAuthServer, http_port,))
 p.start()
 
-
 # ads_read,ads_management,manage_pages
+reading_scopes = (
+    "ads_management", "ads_read", "business_management", "read_audience_network_insights", "read_insights",
+    "manage_pages", "pages_manage_cta", "pages_manage_instant_articles", "pages_show_list", "read_page_mailboxes",
+)
+# old_scopes = ("ads_read", "ads_management", "manage_pages", "publish_pages", "business_management")
 url = "https://www.facebook.com/v2.8/dialog/oauth?" \
-      "client_id=%s&redirect_uri=%s&scope=ads_read,ads_management,manage_pages" \
-      % (app_id, redirect_url)
+      "client_id=%s&redirect_uri=%s&scope=%s" \
+      % (app_id, redirect_url, ",".join(reading_scopes))
 
 print url
 webbrowser.open_new(url)

@@ -1,10 +1,9 @@
+# coding=utf-8
 import json
 from os.path import expanduser
+
 import facebook_business
-
-# from facebookads import FacebookAdsApi
-
-from facebook_business import FacebookAdsApi
+import facebookads
 
 from connector.facebook_api import some_import_method
 
@@ -16,8 +15,13 @@ app_id = auth_config["app_id"]
 app_secret = auth_config["app_secret"]
 access_token = auth_config["access_token"]
 
-# FacebookAdsApi.init(app_id, app_secret, access_token)
-FacebookAdsApi.init(app_id, app_secret, access_token)
+facebookads.FacebookAdsApi.init(app_id, app_secret, access_token)
+facebook_business.FacebookAdsApi.init(app_id, app_secret, access_token)
 
-# some_import_method(122961418485088, access_token)
-some_import_method(1034901646550640, access_token)
+ids = (1034901646550640, 122961418485088, )
+
+for _id in ids:
+    try:
+        some_import_method(_id)
+    except Exception as e:
+        print e.message
