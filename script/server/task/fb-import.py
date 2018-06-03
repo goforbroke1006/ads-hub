@@ -12,6 +12,7 @@ auth_config = json.load(
 )
 
 # https://developers.facebook.com/docs/marketing-api/insights-api
+# https://developers.facebook.com/docs/marketing-api/access/#basic_application
 
 # app_id = auth_config["app_id"]
 # app_secret = auth_config["app_secret"]
