@@ -9,12 +9,10 @@ from os.path import isdir, expanduser
 
 import requests
 
-BASE_FB_GRAPH_URL = "https://graph.facebook.com/v2.8"
+BASE_FB_GRAPH_URL = "https://graph.facebook.com/v2.11"
 
 if len(sys.argv) < 3:
-    raise Exception("Script run example - "
-                    + os.path.basename(__file__)
-                    + " 12345 some-secret")
+    raise Exception("Script run example -\n\n$ %s <APP_ID> <APP_SECRET>" % os.path.basename(__file__))
 
 app_id, app_secret = sys.argv[1:3]
 http_port = 8010
@@ -67,6 +65,16 @@ class FbAuthServer(BaseHTTPRequestHandler):
                 f.write(data_str)
                 f.close()
 
+                self._set_headers()
+                self.wfile.write(
+                    "<html>"
+                    + "<body>"
+                    + "  <h1>Store token!</h1>"
+                    + "  <h2>Success!!</h2>"
+                    + data_str
+                    + "</body>"
+                    + "</html>")
+
                 os._exit(0)
 
 
@@ -80,15 +88,13 @@ def run(server_class=HTTPServer, handler_class=FbAuthServer, port=8080):
 p = Process(target=run, args=(HTTPServer, FbAuthServer, http_port,))
 p.start()
 
-# ads_read,ads_management,manage_pages
 reading_scopes = (
     "ads_read",
-    # "ads_management",
-    # "business_management",
+    "ads_management",
+    "business_management",
     "read_audience_network_insights", "read_insights",
-    # "manage_pages", "pages_manage_cta", "pages_manage_instant_articles", "pages_show_list", "read_page_mailboxes",
+    "manage_pages", "pages_manage_cta", "pages_manage_instant_articles", "pages_show_list", "read_page_mailboxes",
 )
-# old_scopes = ("ads_read", "ads_management", "manage_pages", "publish_pages", "business_management")
 url = "https://www.facebook.com/v2.8/dialog/oauth?" \
       "client_id=%s&redirect_uri=%s&scope=%s" \
       % (app_id, redirect_url, ",".join(reading_scopes))
