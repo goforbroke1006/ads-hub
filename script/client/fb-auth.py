@@ -1,22 +1,30 @@
+import BaseHTTPServer
 import json
 import os
+import ssl
 import sys
 import urlparse
 import webbrowser
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from multiprocessing import Process
-from os.path import isdir, expanduser
+from os.path import isdir, expanduser, isfile
 
 import requests
 
+CERT_FILE_PATH = './../../server.pem'
+
 BASE_FB_GRAPH_URL = "https://graph.facebook.com/v2.11"
+
+if not isfile(CERT_FILE_PATH):
+    raise Exception("At first you should create PEM file - \n\t"
+                    "$ openssl req -new -x509 -keyout server.pem -out server.pem -days 365 -nodes")
 
 if len(sys.argv) < 3:
     raise Exception("Script run example -\n\n$ %s <APP_ID> <APP_SECRET>" % os.path.basename(__file__))
 
 app_id, app_secret = sys.argv[1:3]
-http_port = 8010
-redirect_url = "http://localhost:%d/" % http_port
+http_port = 4443
+redirect_url = "https://localhost:%d/" % http_port
 
 hub_home = expanduser("~") + "/.ads-hub"
 if not isdir(hub_home):
@@ -78,10 +86,13 @@ class FbAuthServer(BaseHTTPRequestHandler):
                 os._exit(0)
 
 
-def run(server_class=HTTPServer, handler_class=FbAuthServer, port=8080):
+def run(server_class=HTTPServer, handler_class=FbAuthServer, port=4443):
     server_address = ('', port)
+
     httpd = server_class(server_address, handler_class)
+    httpd.socket = ssl.wrap_socket(httpd.socket, certfile=CERT_FILE_PATH, server_side=True)
     print 'Starting httpd...'
+
     httpd.serve_forever()
 
 
@@ -91,9 +102,9 @@ p.start()
 reading_scopes = (
     "ads_read",
     "ads_management",
-    "business_management",
-    "read_audience_network_insights", "read_insights",
-    "manage_pages", "pages_manage_cta", "pages_manage_instant_articles", "pages_show_list", "read_page_mailboxes",
+    # "business_management",
+    # "read_audience_network_insights", "read_insights",
+    # "manage_pages", "pages_manage_cta", "pages_manage_instant_articles", "pages_show_list", "read_page_mailboxes",
 )
 url = "https://www.facebook.com/v2.8/dialog/oauth?" \
       "client_id=%s&redirect_uri=%s&scope=%s" \

@@ -1,11 +1,14 @@
 import json
 from os.path import expanduser
 
-from facebookads import FacebookAdsApi
-from facebookads.adobjects.adaccount import AdAccount
-from facebookads.adobjects.adaccountuser import AdAccountUser
-from facebookads.adobjects.adspixel import AdsPixel
-from facebookads.objects import Page
+# from facebookads import FacebookAdsApi
+# from facebookads.adobjects.adaccount import AdAccount
+# from facebookads.adobjects.adaccountuser import AdAccountUser
+
+
+from facebook_business import FacebookAdsApi
+from facebook_business.adobjects.adaccount import AdAccount
+from facebook_business.adobjects.adaccountuser import AdAccountUser
 
 auth_config = json.load(
     open(expanduser("~") + '/.ads-hub/fb-token', 'r')
@@ -18,7 +21,7 @@ auth_config = json.load(
 # app_secret = auth_config["app_secret"]
 access_token = auth_config["access_token"]
 
-FacebookAdsApi.init(access_token=access_token)
+FacebookAdsApi.init(access_token=access_token, account_id='act_1868848106489319')
 
 # print AdsPixel('772856039569351').get_ad_accounts(1034901646550640)
 # print AdsPixel('772856039569351').get_stats()
@@ -27,6 +30,7 @@ FacebookAdsApi.init(access_token=access_token)
 # print page.get_leadgen_forms()
 
 account = AdAccount('act_1868848106489319')
+# account = AdAccount('1868848106489319')
 users = account.get_users()
 for user in users:
     print(user[AdAccountUser.Field.id])
