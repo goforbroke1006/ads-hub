@@ -1,6 +1,6 @@
-import BaseHTTPServer
 import json
 import os
+import requests
 import ssl
 import sys
 import urlparse
@@ -8,8 +8,6 @@ import webbrowser
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from multiprocessing import Process
 from os.path import isdir, expanduser, isfile
-
-import requests
 
 CERT_FILE_PATH = './../../server.pem'
 
