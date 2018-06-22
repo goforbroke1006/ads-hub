@@ -9,7 +9,8 @@ from os.path import isdir
 
 VK_API_VERSION = "5.74"
 
-hub_home = expanduser("~") + "/.ads-hub"
+# hub_home = expanduser("~") + "/.ads-hub"
+hub_home = "./.auth"
 if not isdir(hub_home):
     os.makedirs(hub_home)
 token_file_path = hub_home + "/vk-token"

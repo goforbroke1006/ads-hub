@@ -11,9 +11,7 @@ import connector.facebook_api
 from script.server.base import config
 from script.server.repository import AdsRepository
 
-auth_config = json.load(
-    open(expanduser("~") + '/.ads-hub/fb-token', 'r')
-)
+auth_config = json.load(open('./.auth/fb-token', 'r'))
 
 # https://developers.facebook.com/docs/marketing-api/insights-api
 # https://developers.facebook.com/docs/marketing-api/access/#basic_application

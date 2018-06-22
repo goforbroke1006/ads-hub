@@ -13,9 +13,7 @@ from script.server.repository import AdsRepository
 
 account_id = int(sys.argv[1])
 
-access_token = json.load(
-    open(expanduser("~") + '/.ads-hub/vk-token', 'r')
-)["access_token"]
+access_token = json.load(open('./.auth/vk-token', 'r'))["access_token"]
 ads_client = connector.vkontakte_api.AdsService(access_token)
 
 database_config = config('database.ini', 'postgresql')

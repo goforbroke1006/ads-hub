@@ -1,4 +1,6 @@
 .idea
 *.py.swp
+
+.auth/
 *.ini
 server.pem

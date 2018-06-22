@@ -7,9 +7,9 @@ import urlparse
 import webbrowser
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from multiprocessing import Process
-from os.path import isdir, expanduser, isfile
+from os.path import isdir, isfile
 
-CERT_FILE_PATH = './../../server.pem'
+CERT_FILE_PATH = './../server.pem'
 
 BASE_FB_GRAPH_URL = "https://graph.facebook.com/v2.11"
 
@@ -24,7 +24,8 @@ app_id, app_secret = sys.argv[1:3]
 http_port = 4443
 redirect_url = "https://localhost:%d/" % http_port
 
-hub_home = expanduser("~") + "/.ads-hub"
+# hub_home = expanduser("~") + "/.ads-hub"
+hub_home = "./.auth"
 if not isdir(hub_home):
     os.makedirs(hub_home)
 token_file_path = hub_home + "/fb-token"
