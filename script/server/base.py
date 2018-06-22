@@ -1,7 +1,6 @@
 import ConfigParser
 
 
-
 def config(filename, section):
     parser = ConfigParser.ConfigParser()
     parser.read(filename)

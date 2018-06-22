@@ -1,5 +1,6 @@
 [postgresql]
 host=localhost
+port=35532
 database=ads_hub_db
 user=root
 password=12345678

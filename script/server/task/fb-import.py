@@ -1,18 +1,13 @@
 import json
-from os.path import expanduser
-
-# from facebookads import FacebookAdsApi
-# from facebookads.adobjects.adaccount import AdAccount
-# from facebookads.adobjects.adaccountuser import AdAccountUser
 import sys
-from facebook_business import FacebookAdsApi
-from facebook_business.adobjects.adaccount import AdAccount
-from facebook_business.adobjects.adaccountuser import AdAccountUser
-from facebook_business.adobjects.adsinsights import AdsInsights
-from facebook_business.adobjects.adspixel import AdsPixel
-from facebook_business.adobjects.campaign import Campaign
+import time
+from os.path import expanduser
+from random import randrange
 
-from connector.facebook_api import get_statistics_for_today, get_campaigns
+from dateutil.parser import parse
+from facebook_business import FacebookAdsApi
+
+import connector.facebook_api
 from script.server.base import config
 from script.server.repository import AdsRepository
 
@@ -29,11 +24,55 @@ access_token = auth_config["access_token"]
 
 campaign_id = 'act_%s' % sys.argv[1]
 
-# database_config = config('database.ini', 'postgresql')
-# repository = AdsRepository(database_config, "facebook")
+database_config = config('database.ini', 'postgresql')
+repository = AdsRepository(database_config, "facebook")
 
 FacebookAdsApi.init(app_id=app_id, app_secret=app_secret,
                     access_token=access_token,
                     account_id=campaign_id)
 
-get_campaigns()
+print "Loading campaigns blocks..."
+campaigns = connector.facebook_api.get_campaigns()
+# print campaigns
+# exit(0)
+
+for c in campaigns:
+    start_time = parse(c['start_time'])
+    stop_time = parse(c['stop_time']) if 'stop_time' in c else None
+    repository.save_campaign(
+        c.get_id(),
+        c['name'],
+        start_time,
+        stop_time,
+    )
+    print "Save campaign \"%s\"..." % c['name']
+
+    print "Loading advertising blocks..."
+    ads_list = connector.facebook_api.get_ads(c)
+
+    for ad in ads_list:
+
+        # print ad
+        # exit(0)
+
+        repository.save_advertising(
+            ad.get_id(),
+            ad['name'],
+            '',
+            c.get_id(),
+        )
+        print "Save advertising \"%s\"..." % ad['name']
+
+        time.sleep(randrange(2, 6))
+
+        print "Load statistics..."
+        insights = connector.facebook_api.get_insights(ad)
+
+        for insight in insights:
+            repository.save_statistics_day(
+                ad.get_id(),
+                parse(insight['date_start']),
+                insight['spend'],
+                insight['impressions'],
+                insight['unique_clicks'],
+            )
