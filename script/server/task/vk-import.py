@@ -4,17 +4,16 @@ import json
 import sys
 import time
 from datetime import datetime, timedelta
-from os.path import expanduser
 from random import randint
 
-import connector
+from connector import vkontakte_api
 from script.server.base import config
 from script.server.repository import AdsRepository
 
 account_id = int(sys.argv[1])
 
 access_token = json.load(open('./.auth/vk-token', 'r'))["access_token"]
-ads_client = connector.vkontakte_api.AdsService(access_token)
+ads_client = vkontakte_api.AdsService(access_token)
 
 database_config = config('database.ini', 'postgresql')
 repository = AdsRepository(database_config, "vkontakte")

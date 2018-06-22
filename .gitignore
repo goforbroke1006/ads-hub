@@ -4,3 +4,4 @@
 .auth/
 *.ini
 server.pem
+.env

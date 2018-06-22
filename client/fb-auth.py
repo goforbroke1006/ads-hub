@@ -9,7 +9,7 @@ from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from multiprocessing import Process
 from os.path import isdir, isfile
 
-CERT_FILE_PATH = './../server.pem'
+CERT_FILE_PATH = './server.pem'
 
 BASE_FB_GRAPH_URL = "https://graph.facebook.com/v2.11"
 

@@ -13,3 +13,7 @@ services:
       - 35532:5432
   app:
     build: .
+
+volumes:
+  db_data:
+    driver: local
