@@ -1,0 +1,5 @@
+* * * * * echo "Hello world" >> /var/log/cron.log 2>&1
+#0 */6 * * * export PYTHONPATH=/app && python /app/script/server/task/vk-import.py ${VK_ADS_ACCOUNT_ID} >> /var/log/ads-hub.log 2>&1
+#0 */6 * * * export PYTHONPATH=/app && python /app/script/server/task/fb-import.py ${FB_ADS_ACCOUNT_ID} >> /var/log/ads-hub.log 2>&1
+
+* * * * * cd /app && python script/server/task/vk-import.py ${VK_ADS_ACCOUNT_ID} >> /var/log/ads-hub.log 2>&1

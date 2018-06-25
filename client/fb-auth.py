@@ -101,9 +101,6 @@ p.start()
 reading_scopes = (
     "ads_read",
     "ads_management",
-    # "business_management",
-    # "read_audience_network_insights", "read_insights",
-    # "manage_pages", "pages_manage_cta", "pages_manage_instant_articles", "pages_show_list", "read_page_mailboxes",
 )
 url = "https://www.facebook.com/v2.8/dialog/oauth?" \
       "client_id=%s&redirect_uri=%s&scope=%s" \

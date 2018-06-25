@@ -1,7 +1,6 @@
 import json
 import sys
 import time
-from os.path import expanduser
 from random import randrange
 
 from dateutil.parser import parse
@@ -11,7 +10,7 @@ import connector.facebook_api
 from script.server.base import config
 from script.server.repository import AdsRepository
 
-auth_config = json.load(open('./.auth/fb-token', 'r'))
+auth_config = json.load(open("./.auth/fb-token", "r"))
 
 # https://developers.facebook.com/docs/marketing-api/insights-api
 # https://developers.facebook.com/docs/marketing-api/access/#basic_application
@@ -22,7 +21,7 @@ access_token = auth_config["access_token"]
 
 campaign_id = 'act_%s' % sys.argv[1]
 
-database_config = config('database.ini', 'postgresql')
+database_config = config("database.ini", "postgresql")
 repository = AdsRepository(database_config, "facebook")
 
 FacebookAdsApi.init(app_id=app_id, app_secret=app_secret,
@@ -31,8 +30,6 @@ FacebookAdsApi.init(app_id=app_id, app_secret=app_secret,
 
 print "Loading campaigns blocks..."
 campaigns = connector.facebook_api.get_campaigns()
-# print campaigns
-# exit(0)
 
 for c in campaigns:
     start_time = parse(c['start_time'])
@@ -49,10 +46,6 @@ for c in campaigns:
     ads_list = connector.facebook_api.get_ads(c)
 
     for ad in ads_list:
-
-        # print ad
-        # exit(0)
-
         repository.save_advertising(
             ad.get_id(),
             ad['name'],

@@ -4,12 +4,10 @@ import sys
 import urllib2
 import urlparse
 import webbrowser
-from os.path import expanduser
 from os.path import isdir
 
 VK_API_VERSION = "5.74"
 
-# hub_home = expanduser("~") + "/.ads-hub"
 hub_home = "./.auth"
 if not isdir(hub_home):
     os.makedirs(hub_home)
