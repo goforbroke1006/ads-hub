@@ -1,3 +1,4 @@
+import json
 import sys
 
 from connector.ga_api import get_service, upload_file
@@ -12,8 +13,10 @@ service = get_service(
     scopes=[scope],
     key_file_location=key_file_location)
 
-upload_file(service,
-            account_id=acc_id, web_property_id=wp_id,
-            custom_data_source_id=cds_id,
-            file_path=fp
-            )
+res = upload_file(service,
+                  account_id=acc_id, web_property_id=wp_id,
+                  custom_data_source_id=cds_id,
+                  file_path=fp
+                  )
+
+print json.dumps(res)

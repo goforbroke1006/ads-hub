@@ -89,8 +89,8 @@ def upload_file(service, account_id, web_property_id, custom_data_source_id, fil
     :type account_id: str
     :type web_property_id: str
     :type custom_data_source_id: str
-    :return: None
-    :rtype: None
+    :return: Uploading status
+    :rtype: dict
     """
 
     from googleapiclient.http import MediaFileUpload
@@ -103,7 +103,7 @@ def upload_file(service, account_id, web_property_id, custom_data_source_id, fil
             webPropertyId=web_property_id,
             customDataSourceId=custom_data_source_id,
             media_body=media).execute()
-        print daily_upload
+        return daily_upload
 
     except TypeError, error:
         # Handle errors in constructing a query.
