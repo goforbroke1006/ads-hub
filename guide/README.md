@@ -10,7 +10,7 @@
 
 4. Click on "Data import" button in resource's section (center section between "account" and "view")
 5. Create new data-set
-6. Copy **custom_data_source_id** which will have generated for you data-set
+6. Copy **custom_data_source_id** which will have been generated for you data-set
 
     ![Custom data source ID location](ga-custom-data-source-id-location.png)
 
