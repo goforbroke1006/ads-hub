@@ -27,7 +27,9 @@ campaign_id = 'act_%s' % sys.argv[1]
 # repository = AdsRepository(database_config, "facebook")
 
 t = datetime.today()
-writer = CsvExportWriter(provider_name="facebook.com", date=t.strftime('%Y-%m-%d'))
+writer = CsvExportWriter(
+    target_directory='import',
+    provider_name="facebook.com", date=t.strftime('%Y-%m-%d'))
 
 FacebookAdsApi.init(app_id=app_id, app_secret=app_secret,
                     access_token=access_token,

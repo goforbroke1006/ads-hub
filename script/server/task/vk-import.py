@@ -20,7 +20,9 @@ ads_client = vkontakte_api.AdsService(access_token)
 # repository = AdsRepository(database_config, "vkontakte")
 
 t = datetime.today()
-writer = CsvExportWriter(provider_name="vk.com", date=t.strftime('%Y-%m-%d'))
+writer = CsvExportWriter(
+    target_directory='import',
+    provider_name="vk.com", date=t.strftime('%Y-%m-%d'))
 
 print('Load all campaigns...')
 campaigns_list = ads_client.get_campaigns(account_id)["response"]

@@ -3,11 +3,11 @@ import csv
 
 class CsvExportWriter:
 
-    def __init__(self, provider_name, date):
+    def __init__(self, target_directory, provider_name, date):
         self.provider_name = provider_name
         self.date = date
 
-        self.file_stream = open('%s-%s' % (provider_name, date), 'wb')
+        self.file_stream = open('%s/%s-%s.csv' % (target_directory, provider_name, date), 'wb')
         self.writer = csv.writer(self.file_stream, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         self.writer.writerow([
             'ga:source', 'ga:medium', 'ga:campaign', 'ga:adwordsCampaignID',

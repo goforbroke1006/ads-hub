@@ -5,3 +5,5 @@
 *.ini
 server.pem
 .env
+
+import/*.csv
