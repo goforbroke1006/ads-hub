@@ -7,13 +7,12 @@ from datetime import datetime, timedelta
 from random import randint
 
 from connector import vkontakte_api
-from script.server.base import config
 from script.server.csv_writer import CsvExportWriter
-from script.server.repository import AdsRepository
 
-account_id = int(sys.argv[1])
+account_id, access_token, import_dir, = sys.argv[1:]
+if import_dir.endswith('/'):
+    url = import_dir[:-1]
 
-access_token = json.load(open('./.auth/vk-token', 'r'))["access_token"]
 ads_client = vkontakte_api.AdsService(access_token)
 
 # database_config = config('database.ini', 'postgresql')
@@ -21,8 +20,8 @@ ads_client = vkontakte_api.AdsService(access_token)
 
 t = datetime.today()
 writer = CsvExportWriter(
-    target_directory='import',
-    provider_name="vk.com", date=t.strftime('%Y-%m-%d'))
+    target_directory=import_dir,
+    provider_name="vk.com", date=t.strftime('%Y-%m-%d-%H-%M-%S'))
 
 print('Load all campaigns...')
 campaigns_list = ads_client.get_campaigns(account_id)["response"]

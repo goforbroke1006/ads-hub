@@ -15,6 +15,7 @@ class CsvExportWriter:
             'ga:adCost', 'ga:adClicks', 'ga:impressions',
             'ga:adGroup', 'ga:adSlot', 'ga:date', 'ga:importBehavior',
         ])
+        self.file_stream.flush()
 
     def write(self, ga_medium, ga_campaign, ga_adwards_campaign_id,
               ga_keyword, ga_ad_content,

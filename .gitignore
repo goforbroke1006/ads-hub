@@ -7,3 +7,4 @@ server.pem
 .env
 
 import/*.csv
+imported/*.csv

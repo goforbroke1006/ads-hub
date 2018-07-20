@@ -1,39 +1,28 @@
-import json
 import sys
 import time
+from datetime import datetime
 from random import randrange
 
 from dateutil.parser import parse
 from facebook_business import FacebookAdsApi
 
 import connector.facebook_api
-from script.server.base import config
 from script.server.csv_writer import CsvExportWriter
-from script.server.repository import AdsRepository
-from datetime import datetime
 
-auth_config = json.load(open("./.auth/fb-token", "r"))
-
-# https://developers.facebook.com/docs/marketing-api/insights-api
-# https://developers.facebook.com/docs/marketing-api/access/#basic_application
-
-app_id = auth_config["app_id"]
-app_secret = auth_config["app_secret"]
-access_token = auth_config["access_token"]
-
-campaign_id = 'act_%s' % sys.argv[1]
+campaign_id, access_token, import_dir, = sys.argv[1:]
+campaign_id = 'act_%s' % campaign_id
 
 # database_config = config("database.ini", "postgresql")
 # repository = AdsRepository(database_config, "facebook")
 
 t = datetime.today()
 writer = CsvExportWriter(
-    target_directory='import',
-    provider_name="facebook.com", date=t.strftime('%Y-%m-%d'))
+    target_directory=import_dir,
+    provider_name="facebook.com", date=t.strftime('%Y-%m-%d-%H-%M-%S'))
 
-FacebookAdsApi.init(app_id=app_id, app_secret=app_secret,
-                    access_token=access_token,
-                    account_id=campaign_id)
+FacebookAdsApi.init(
+    access_token=access_token,
+    account_id=campaign_id)
 
 print "Loading campaigns blocks..."
 campaigns = connector.facebook_api.get_campaigns()

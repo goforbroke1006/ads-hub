@@ -6,6 +6,9 @@ import urlparse
 import webbrowser
 from os.path import isdir
 
+client_id, client_secret, http_port = sys.argv[1:]
+http_port = int(http_port)
+
 VK_API_VERSION = "5.74"
 
 hub_home = "./.auth"
@@ -13,9 +16,6 @@ if not isdir(hub_home):
     os.makedirs(hub_home)
 token_file_path = hub_home + "/vk-token"
 
-client_id = int(sys.argv[1])
-client_secret = sys.argv[2] if len(sys.argv) >= 3 else None
-http_port = int(sys.argv[3]) if len(sys.argv) >= 4 else 8082
 redirect_uri = "http://localhost:%d/app_dev.php/login/check-vkontakte" % http_port
 
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
