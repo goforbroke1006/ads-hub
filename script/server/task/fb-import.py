@@ -56,20 +56,31 @@ for c in campaigns:
         insights = connector.facebook_api.get_insights(ad)
 
         for insight in insights:
-            writer.write(
-                ga_medium='cmp',
-                ga_campaign=c['name'] + '|' + c.get_id(),
-                ga_adwards_campaign_id=None,
 
-                ga_keyword=None,
-                ga_ad_content=None,
+            medium = ''
+            if 'cpc' in ad:
+                medium = 'cpc'
+            if 'cpm' in ad:
+                medium = 'cpm'
+            if 'cpp' in ad:
+                medium = 'cpp'
+            if 'ctr' in ad:
+                medium = 'ctr'
+
+            writer.write(
+                ga_medium=medium,
+                ga_campaign=c['name'] + '|' + c.get_id(),
+                ga_adwards_campaign_id=ad.get_id(),
+
+                ga_keyword=c['name'],
+                ga_ad_content=c['name'],
 
                 ga_ad_cost=insight['spend'],
                 ga_ad_clicks=insight['unique_clicks'],
                 ga_impressions=insight['impressions'],
 
-                ga_ad_group=None,
-                ga_ad_slot=None,
+                ga_ad_group='ADSHUB | ' + c.get_id(),
+                ga_ad_slot=0,
                 ga_date=parse(insight['date_start']),
 
                 ga_import_behavior=None,

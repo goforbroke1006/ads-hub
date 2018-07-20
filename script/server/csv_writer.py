@@ -39,17 +39,17 @@ class CsvExportWriter:
             ga_ad_group = '(not set)'
 
         if ga_ad_slot is None:
-            ga_ad_slot = '(not set)'
+            ga_ad_slot = 0
 
         if ga_import_behavior is None:
-            ga_import_behavior = '(not set)'
+            ga_import_behavior = 'SUMMATION'
 
         self.writer.writerow([
             self.provider_name.encode('utf-8'), ga_medium.encode('utf-8'), ga_campaign.encode('utf-8'),
             ga_adwards_campaign_id.encode('utf-8'),
             ga_keyword.encode('utf-8'), ga_ad_content.encode('utf-8'),
             ga_ad_cost, ga_ad_clicks, ga_impressions,
-            ga_ad_group.encode('utf-8'), ga_ad_slot.encode('utf-8'), ga_date,
+            ga_ad_group.encode('utf-8'), ga_ad_slot, ga_date,
             ga_import_behavior.encode('utf-8'),
         ])
         self.file_stream.flush()

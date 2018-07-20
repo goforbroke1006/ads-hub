@@ -24,10 +24,8 @@ writer = CsvExportWriter(
     target_directory=import_dir,
     provider_name="vk.com", date=t.strftime('%Y-%m-%d-%H-%M-%S'))
 
-print os.path.abspath(writer.file_path)
-exit(0)
 
-print('Load all campaigns...')
+# print('Load all campaigns...')
 campaigns_list = ads_client.get_campaigns(account_id)["response"]
 # for campaign in campaigns_list:
 #     start_time = int(campaign["start_time"]) \
@@ -43,7 +41,7 @@ campaigns_list = ads_client.get_campaigns(account_id)["response"]
 
 time.sleep(randint(2, 6))
 
-print('Load all advertising list...')
+# print('Load all advertising list...')
 ads_list = ads_client.get_ads_layout(account_id)["response"]
 for ad in ads_list:
     # repository.save_advertising(
@@ -62,7 +60,7 @@ for ad in ads_list:
 
     time.sleep(randint(2, 6))
 
-    print('    Update stat for %d ...' % int(ad["id"]))
+    # print('    Update stat for %d ...' % int(ad["id"]))
     stat_response = ads_client.get_statistics(
         account_id, "ad", "day", (ad["id"],),
         datetime.today() - timedelta(days=7),
