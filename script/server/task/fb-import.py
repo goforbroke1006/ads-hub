@@ -82,3 +82,5 @@ for c in campaigns:
             #     insight['impressions'],
             #     insight['unique_clicks'],
             # )
+
+print writer.file_path

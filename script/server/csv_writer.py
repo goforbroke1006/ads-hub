@@ -7,7 +7,8 @@ class CsvExportWriter:
         self.provider_name = provider_name
         self.date = date
 
-        self.file_stream = open('%s/%s-%s.csv' % (target_directory, provider_name, date), 'wb')
+        self.file_path = '%s/%s-%s.csv' % (target_directory, provider_name, date)
+        self.file_stream = open(self.file_path, 'wb')
         self.writer = csv.writer(self.file_stream, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         self.writer.writerow([
             'ga:source', 'ga:medium', 'ga:campaign', 'ga:adwordsCampaignID',

@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import json
+import os
 import sys
 import time
 from datetime import datetime, timedelta
@@ -10,6 +10,7 @@ from connector import vkontakte_api
 from script.server.csv_writer import CsvExportWriter
 
 account_id, access_token, import_dir, = sys.argv[1:]
+
 if import_dir.endswith('/'):
     url = import_dir[:-1]
 
@@ -22,6 +23,9 @@ t = datetime.today()
 writer = CsvExportWriter(
     target_directory=import_dir,
     provider_name="vk.com", date=t.strftime('%Y-%m-%d-%H-%M-%S'))
+
+print os.path.abspath(writer.file_path)
+exit(0)
 
 print('Load all campaigns...')
 campaigns_list = ads_client.get_campaigns(account_id)["response"]
@@ -87,3 +91,5 @@ for ad in ads_list:
         #     s["impressions"] if "impressions" in s else 0,
         #     s["clicks"] if "clicks" in s else 0,
         # )
+
+print os.path.abspath(writer.file_path)
