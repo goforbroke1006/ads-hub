@@ -66,7 +66,7 @@ class AdsService(BaseClient):
         return self.request("ads.getCampaigns", options)
 
     def get_ads_layout(self, account_id,
-                       client_id=None, include_deleted=True,
+                       client_id=None, include_deleted=False,
                        campaign_ids=(), ad_ids=(),
                        limit=200, offset=0):
         options = {
@@ -80,6 +80,24 @@ class AdsService(BaseClient):
         if client_id is not None:
             options["client_id"] = client_id
         return self.request("ads.getAdsLayout", options)
+
+    def get_ads(self, account_id,
+                client_id=None, include_deleted=False,
+                campaign_ids=(), ad_ids=(),
+                limit=200, offset=0):
+        campaign_ids = ",".join("%s" % int(cmp_id) for cmp_id in campaign_ids)
+        campaign_ids = '[' + campaign_ids + ']'
+        options = {
+            "account_id": int(account_id),
+            "include_deleted": int(include_deleted),
+            "campaign_ids": campaign_ids,
+            "ad_ids": ",".join("%s" % int(ad_id) for ad_id in ad_ids),
+            "limit": int(limit),
+            "offset": int(offset),
+        }
+        if client_id is not None:
+            options["client_id"] = client_id
+        return self.request("ads.getAds", options)
 
     def get_statistics(self, account_id, ids_type, period,
                        ids=(), date_from=None, date_to=None):

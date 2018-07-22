@@ -1,5 +1,6 @@
 .idea
 *.py.swp
+venv/
 
 .auth/
 *.ini

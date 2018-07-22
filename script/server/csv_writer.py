@@ -33,6 +33,10 @@ class CsvExportWriter:
         if ga_ad_content is None:
             ga_ad_content = '(not set)'
 
+        ga_ad_cost = int(round(float(ga_ad_cost)))
+        ga_ad_clicks = int(round(float(ga_ad_clicks)))
+        ga_impressions = int(round(float(ga_impressions)))
+
         ga_date = ga_date.strftime('%Y%m%d')
 
         if ga_ad_group is None:
@@ -45,11 +49,20 @@ class CsvExportWriter:
             ga_import_behavior = 'SUMMATION'
 
         self.writer.writerow([
-            self.provider_name.encode('utf-8'), ga_medium.encode('utf-8'), ga_campaign.encode('utf-8'),
-            ga_adwards_campaign_id.encode('utf-8'),
-            ga_keyword.encode('utf-8'), ga_ad_content.encode('utf-8'),
-            ga_ad_cost, ga_ad_clicks, ga_impressions,
-            ga_ad_group.encode('utf-8'), ga_ad_slot, ga_date,
-            ga_import_behavior.encode('utf-8'),
+            self.provider_name,
+            ga_medium,
+            ga_campaign,
+            ga_adwards_campaign_id,
+            ga_keyword,
+            ga_ad_content,
+
+            ga_ad_cost,
+            ga_ad_clicks,
+            ga_impressions,
+
+            ga_ad_group,
+            ga_ad_slot,
+            ga_date,
+            ga_import_behavior,
         ])
         self.file_stream.flush()

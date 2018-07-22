@@ -29,7 +29,7 @@ def get_campaigns():
         params={
             Campaign.Field.effective_status: [
                 Campaign.ConfiguredStatus.active,
-                Campaign.ConfiguredStatus.paused,
+                # Campaign.ConfiguredStatus.paused,
             ],
         },
         fields={
@@ -110,5 +110,5 @@ def get_insights(ad):
         AdsInsights.Field.ctr,
     ], params={
         'level': AdsInsights.Level.ad,
-        'date_preset': AdsInsights.DatePreset.yesterday,
+        'date_preset': AdsInsights.DatePreset.last_90d,
     })
