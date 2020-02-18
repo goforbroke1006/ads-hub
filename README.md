@@ -1,6 +1,12 @@
 # ads-hub
 
 
+### How to run
+
+```bash
+pip install --user -r requirements.txt
+```
+
 ### Useful links
 
 * [Business Facebook](https://business.facebook.com/home/accounts)
